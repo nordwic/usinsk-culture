@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { ChevronUp } from 'lucide-react';
-
-type Village = { id: number; name: string; top: string; left: string };
+import InteractiveMap from '../../shared/ui/InteractiveMap';
+import { MAP_PINS } from '../../shared/constants';
+import type { Village } from '../../shared/types/village';
 
 interface VillageDetail {
 	id: number;
@@ -12,19 +13,24 @@ interface VillageDetail {
 	images: { src: string; caption: string }[];
 }
 
-const villages: Village[] = [
-	{ id: 1, name: 'Верхнеколвинск', top: '24%', left: '58%' },
-	{ id: 2, name: 'Возей', top: '39%', left: '66%' },
-	{ id: 3, name: 'Захарвань', top: '50%', left: '39%' },
-	{ id: 4, name: 'Щельябож', top: '52%', left: '52%' },
-	{ id: 5, name: 'Мутный Материк', top: '72%', left: '23%' },
-	{ id: 6, name: 'Новикбож', top: '64%', left: '57%' },
-	{ id: 7, name: 'Усть-Уса', top: '73%', left: '61%' },
-	{ id: 8, name: 'Колва', top: '66%', left: '74%' },
-	{ id: 9, name: 'Парма', top: '78%', left: '77%' },
-	{ id: 10, name: 'Усинск', top: '71%', left: '84%' },
-	{ id: 11, name: 'Усть-Лыжа', top: '90%', left: '57%' },
-];
+// Координаты пинов берутся из shared/constants (MAP_PINS)
+// Здесь хранятся только имена для sticky-навигации и заголовков разделов
+const villages: Village[] = MAP_PINS.map((p, i) => ({
+	...p,
+	name: [
+		'Верхнеколвинск',
+		'Возей',
+		'Захарвань',
+		'Щельябож',
+		'Мутный Материк',
+		'Новикбож',
+		'Усть-Уса',
+		'Колва',
+		'Парма',
+		'Усинск',
+		'Усть-Лыжа',
+	][i],
+}));
 
 const details: VillageDetail[] = [
 	{
@@ -267,65 +273,17 @@ const MapPage = () => {
 					плавно прокрутится к его описанию
 				</p>
 
-				<div className="relative bg-[#021225] rounded-3xl overflow-hidden border border-white/10 p-4">
-					<div className="relative w-full">
-						<img
-							src="/map.png"
-							alt="Карта Усинского района"
-							className="w-full object-contain select-none drop-shadow-[0_0_30px_rgba(34,211,238,0.20)]"
-						/>
-
-						{villages.map((village) => (
-							<button
-								key={village.id}
-								onClick={() => scrollToVillage(village.id)}
-								className="absolute group"
-								style={{
-									top: village.top,
-									left: village.left,
-									transform: 'translate(-50%, -50%)',
-								}}
-							>
-								<div
-									className={`relative transition-all duration-300 ${
-										activeId === village.id
-											? 'scale-125'
-											: 'hover:scale-110'
-									}`}
-								>
-									<div
-										className={`absolute inset-0 rounded-full blur-md ${
-											activeId === village.id
-												? 'bg-cyan-500/70'
-												: 'bg-red-400/30'
-										}`}
-									/>
-									<img
-										src="/dot.png"
-										alt="point"
-										className={`relative z-10 object-contain ${
-											activeId === village.id
-												? 'w-10 h-10'
-												: 'w-7 h-7'
-										}`}
-									/>
-								</div>
-								<div
-									className={`absolute whitespace-nowrap text-sm font-semibold transition-all duration-300 left-1/2 top-7 -translate-x-1/2 ${
-										activeId === village.id
-											? 'text-cyan-300 scale-105'
-											: 'text-gray-100'
-									}`}
-									style={{
-										textShadow:
-											'0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(0,200,255,0.5)',
-									}}
-								>
-									{village.name}
-								</div>
-							</button>
-						))}
-					</div>
+				<div
+					className="bg-[#021225] rounded-3xl overflow-hidden border border-white/10 p-4"
+					style={{ width: 890 }}
+				>
+					<InteractiveMap
+						pins={MAP_PINS}
+						activeId={activeId}
+						onPinClick={scrollToVillage}
+						pinSize={100}
+						className="drop-shadow-[0_0_30px_rgba(34,211,238,0.20)]"
+					/>
 				</div>
 			</div>
 

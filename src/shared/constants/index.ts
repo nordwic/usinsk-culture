@@ -1,3 +1,17 @@
+export const MAP_PINS = [
+	{ id: 1, top: '24%', left: '68%' },
+	{ id: 2, top: '35%', left: '73%' },
+	{ id: 3, top: '43%', left: '35%' },
+	{ id: 4, top: '46%', left: '58%' },
+	{ id: 5, top: '65%', left: '29%' },
+	{ id: 6, top: '61%', left: '55%' },
+	{ id: 7, top: '59%', left: '70%' },
+	{ id: 8, top: '65%', left: '57%' },
+	{ id: 9, top: '65%', left: '81%' },
+	{ id: 10, top: '71%', left: '73%' },
+	{ id: 11, top: '82%', left: '64%' },
+];
+
 export const VILLAGES = [
 	'Верхнеколвинск',
 	'Возей',

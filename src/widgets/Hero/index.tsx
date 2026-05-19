@@ -1,35 +1,41 @@
 import { useState } from 'react';
+import InteractiveMap from '../../shared/ui/InteractiveMap';
+import { MAP_PINS } from '../../shared/constants';
+import type { Village } from '../../shared/types/village';
 
-type Village = {
-	id: number;
-	name: string;
-	top: string;
-	left: string;
-};
-
-const villages: Village[] = [
-	{ id: 1, name: 'Верхнеколвинск', top: '24%', left: '58%' },
-	{ id: 2, name: 'Возей', top: '39%', left: '66%' },
-	{ id: 3, name: 'Захарвань', top: '50%', left: '39%' },
-	{ id: 4, name: 'Щельябож', top: '52%', left: '52%' },
-	{ id: 5, name: 'Мутный Материк', top: '72%', left: '23%' },
-	{ id: 6, name: 'Новикбож', top: '64%', left: '57%' },
-	{ id: 7, name: 'Усть-Уса', top: '73%', left: '61%' },
-	{ id: 8, name: 'Колва', top: '66%', left: '74%' },
-	{ id: 9, name: 'Парма', top: '78%', left: '77%' },
-	{ id: 10, name: 'Усинск', top: '71%', left: '84%' },
-	{ id: 11, name: 'Усть-Лыжа', top: '90%', left: '57%' },
-];
+const villages: Village[] = MAP_PINS.map((p, i) => ({
+	...p,
+	name: [
+		'Верхнеколвинск',
+		'Возей',
+		'Захарвань',
+		'Щельябож',
+		'Мутный Материк',
+		'Новикбож',
+		'Усть-Уса',
+		'Колва',
+		'Парма',
+		'Усинск',
+		'Усть-Лыжа',
+	][i],
+}));
 
 const Hero = () => {
-	const [activeVillage, setActiveVillage] = useState<string>('Усинск');
+	const [activeId, setActiveId] = useState<number | null>(null);
 
 	return (
-		<section className="relative overflow-hidden min-h-screen bg-[#021225]">
-			{/* Фон */}
-			<div className="absolute inset-0">
-				<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,#0ea5e930,transparent_40%)]" />
-				<div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,#06b6d420,transparent_40%)]" />
+		<section className="relative overflow-hidden min-h-screen">
+			{/* Фоновая картинка */}
+			<div
+				className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+				style={{ backgroundImage: 'url(/BGorig.jpg)' }}
+			/>
+			{/* Затемняющий оверлей */}
+			<div className="absolute inset-0 bg-[#021225]/70" />
+			{/* Цветовые акценты */}
+			<div className="absolute inset-0 pointer-events-none">
+				<div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,#0ea5e920,transparent_40%)]" />
+				<div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,#06b6d415,transparent_40%)]" />
 			</div>
 
 			<div className="relative z-10 max-w-[1700px] mx-auto px-10 py-16">
@@ -58,41 +64,18 @@ const Hero = () => {
 							</p>
 						</div>
 
-						{/* Кнопки населённых пунктов */}
-						{/* <div className="flex flex-wrap gap-3 mt-10">
-							{villages.map((village) => (
-								<button
-									key={village.id}
-									onClick={() =>
-										setActiveVillage(village.name)
-									}
-									className={`
-                    px-5 py-3 rounded-xl transition-all duration-300
-                    border border-white/10 backdrop-blur-md
-                    ${
-						activeVillage === village.name
-							? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/40 scale-105'
-							: 'bg-white/10 text-gray-200 hover:bg-white/20'
-					}
-                  `}
-								>
-									{village.name}
-								</button>
-							))}
-						</div> */}
-
-						{/* Информация о населённом пункте */}
 						<div className="mt-14">
 							<div className="max-w-2xl rounded-3xl border border-white/10 bg-white/10 backdrop-blur-xl p-8">
 								<p className="text-cyan-300 text-sm uppercase tracking-wider mb-2">
-									Выбранный населённый пункт
+									Населённый пункт
 								</p>
 								<h2 className="text-4xl font-bold text-white mb-4">
-									{activeVillage}
+									{activeId
+										? `Пункт ${villages.find((v) => v.id === activeId)?.name}`
+										: 'Выберите на карте'}
 								</h2>
 								<p className="text-gray-300 leading-relaxed">
-									Нажмите на метку на карте или кнопку
-									населённого пункта для перехода к
+									Нажмите на метку на карте для перехода к
 									материалам, событиям, фотографиям и
 									культурным объектам выбранного раздела.
 								</p>
@@ -102,68 +85,15 @@ const Hero = () => {
 
 					{/* ПРАВАЯ ЧАСТЬ — карта */}
 					<div className="relative flex items-start justify-end pt-4">
-						<div className="absolute w-[700px] h-[700px] bg-cyan-400/10 blur-3xl rounded-full right-0 top-10" />
-
-						<div className="relative w-full max-w-[820px] overflow-hidden">
-							<img
-								src="/map.png"
-								alt="Интерактивная карта"
-								className="w-full object-contain select-none drop-shadow-[0_0_45px_rgba(34,211,238,0.25)]"
-							/>
-
-							{villages.map((village) => (
-								<button
-									key={village.id}
-									onClick={() =>
-										setActiveVillage(village.name)
-									}
-									className="absolute group"
-									style={{
-										top: village.top,
-										left: village.left,
-										transform: 'translate(-50%, -50%)',
-									}}
-								>
-									<div
-										className={`relative transition-all duration-300 ${
-											activeVillage === village.name
-												? 'scale-125'
-												: 'hover:scale-110'
-										}`}
-									>
-										<div
-											className={`absolute inset-0 rounded-full blur-md ${
-												activeVillage === village.name
-													? 'bg-red-500/60'
-													: 'bg-red-400/30'
-											}`}
-										/>
-										<img
-											src="/dot.png"
-											alt="point"
-											className={`relative z-10 object-contain ${
-												activeVillage === village.name
-													? 'w-10 h-10'
-													: 'w-7 h-7'
-											}`}
-										/>
-									</div>
-									<div
-										className={`absolute whitespace-nowrap text-sm font-semibold transition-all duration-300 left-1/2 top-7 -translate-x-1/2 ${
-											activeVillage === village.name
-												? 'text-white scale-105'
-												: 'text-gray-100'
-										}`}
-										style={{
-											textShadow:
-												'0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,0,0,0.6)',
-										}}
-									>
-										{village.name}
-									</div>
-								</button>
-							))}
-						</div>
+						<div className="absolute w-[700px] h-[700px] bg-cyan-400/10 blur-3xl rounded-full right-0 top-10 pointer-events-none" />
+						<InteractiveMap
+							pins={villages}
+							activeId={activeId}
+							onPinClick={(id) =>
+								setActiveId((cur) => (cur === id ? null : id))
+							}
+							className="max-w-[820px] drop-shadow-[0_0_45px_rgba(34,211,238,0.25)]"
+						/>
 					</div>
 				</div>
 			</div>
