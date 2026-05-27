@@ -6,6 +6,7 @@ import type {
 	MediaItem,
 	Message,
 } from '../shared/types';
+import { defaultNews, defaultMedia } from '../shared/models';
 
 interface DataContextType {
 	news: NewsItem[];
@@ -29,65 +30,7 @@ interface DataContextType {
 	markMessageRead: (id: number) => void;
 }
 
-const defaultNews: NewsItem[] = [
-	{
-		id: 1,
-		title: 'Открытие выставки «Коми орнамент»',
-		content:
-			'В Усинском доме культуры открылась уникальная выставка традиционного коми орнамента. На выставке представлены работы местных мастеров, объединяющие вековые традиции народного искусства. Посетители могут увидеть вышивку, ткачество и резьбу по дереву с характерными узорами коми культуры.',
-		summary: 'Выставка традиционного коми орнамента в доме культуры',
-		category: 'Культура',
-		image: '/yologa.jpg',
-		date: '2026-05-15',
-		author: 'admin',
-		published: true,
-	},
-	{
-		id: 2,
-		title: 'Фестиваль «Зарни сюр» собрал сотни участников',
-		content:
-			'Ежегодный коми фестиваль «Зарни сюр» прошёл в Усинске. Участники из разных сёл района представили народные песни, танцы и ремёсла. Фестиваль стал настоящим праздником культурного разнообразия региона.',
-		summary: 'Ежегодный коми фестиваль прошёл в Усинске',
-		category: 'Культура',
-		image: '/zarni.jpg',
-		date: '2026-05-10',
-		author: 'editor',
-		published: true,
-	},
-	{
-		id: 3,
-		title: 'Мастер-класс по коми ткачеству',
-		content:
-			'В библиотеке состоялся мастер-класс по традиционному коми ткачеству. Опытная мастерица обучила желающих основам создания традиционных узоров на ткацком станке.',
-		summary: 'Обучение традиционному ткачеству для всех желающих',
-		category: 'Традиции',
-		date: '2026-05-05',
-		author: 'editor',
-		published: true,
-	},
-	{
-		id: 4,
-		title: 'Итоги районного конкурса чтецов',
-		content:
-			'Завершился районный конкурс чтецов, посвящённый коми поэзии. Конкурс собрал более 50 участников из всех сёл района.',
-		summary: 'Подведены итоги конкурса коми поэзии',
-		category: 'Образование',
-		date: '2026-04-28',
-		author: 'admin',
-		published: true,
-	},
-	{
-		id: 5,
-		title: 'Новые экспонаты в краеведческом музее',
-		content:
-			'Краеведческий музей Усинска пополнился новыми экспонатами — предметами быта коми народа XIX–XX веков.',
-		summary: 'Музей получил новые предметы коми быта',
-		category: 'Культура',
-		date: '2026-04-20',
-		author: 'admin',
-		published: true,
-	},
-];
+// defaultNews импортируется из ../shared/models/news.data.ts
 
 const defaultEvents: EventItem[] = [
 	{
@@ -187,58 +130,7 @@ const defaultHeritage: HeritageItem[] = [
 	},
 ];
 
-const defaultMedia: MediaItem[] = [
-	{
-		id: 1,
-		title: 'Праздник Йöлöга 2025',
-		type: 'photo',
-		url: '/yologa.jpg',
-		category: 'Праздники',
-		description: 'Фотографии с ежегодного праздника',
-		date: '2025-06-10',
-		uploadedBy: 'admin',
-	},
-	{
-		id: 2,
-		title: 'Фестиваль Зарни сюр',
-		type: 'photo',
-		url: '/zarni.jpg',
-		category: 'Праздники',
-		description: 'Фотографии с фестиваля коми культуры',
-		date: '2025-06-20',
-		uploadedBy: 'editor',
-	},
-	{
-		id: 3,
-		title: 'Природа Усинского района',
-		type: 'photo',
-		url: '/myrpom.jpg',
-		category: 'Природа',
-		description: 'Пейзажи района',
-		date: '2025-07-01',
-		uploadedBy: 'admin',
-	},
-	{
-		id: 4,
-		title: 'Культурная программа',
-		type: 'photo',
-		url: '/mitany.jpg',
-		category: 'События',
-		description: 'Мероприятие «Ми тани олам»',
-		date: '2025-07-15',
-		uploadedBy: 'editor',
-	},
-	{
-		id: 5,
-		title: 'Троица в Верхнеколвинске',
-		type: 'photo',
-		url: '/troica.jpg',
-		category: 'Праздники',
-		description: 'Праздничные мероприятия',
-		date: '2025-06-01',
-		uploadedBy: 'admin',
-	},
-];
+// defaultMedia импортируется из ../shared/models/media.data.ts
 
 function load<T>(key: string, def: T[]): T[] {
 	try {
